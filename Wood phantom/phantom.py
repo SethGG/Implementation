@@ -4,11 +4,11 @@ from matplotlib.widgets import Slider, RadioButtons
 from skimage import transform, util
 
 
-def generate_wood_face(seed, resolution=(400, 300),
-                       depth=1000,
-                       early_wood_width_range=(3, 6),
+def generate_wood_face(seed, resolution=(800, 600),
+                       depth=2000,
+                       early_wood_width_range=(6, 12),
                        early_wood_gray_range=(175, 200),
-                       late_wood_width_range=(3, 6),
+                       late_wood_width_range=(6, 12),
                        late_wood_gray_range=(50, 75),
                        rot_deg=0):
     # fix seed
@@ -114,7 +114,7 @@ def interactive_slice_viewer(image3d):
             img_display.set_data(image3d[:, slice_idx, :].T)
         elif current_axis == 2:
             img_display.set_data(image3d[:, :, slice_idx].T)
-        fig.canvas.draw_idle()
+        # fig.canvas.draw_idle()
 
     def update_axis(label):
         nonlocal current_axis
@@ -139,18 +139,19 @@ def interactive_slice_viewer(image3d):
         )
         slice_slider.on_changed(update_slice)
 
+        ax.clear()
         img_display = ax.imshow(image3d[0, :, :] if current_axis == 0 else image3d[:, 0, :].T
                                 if current_axis == 1 else image3d[:, :, 0].T, cmap='gray')
         ax.set_xlim([0, dimensions[current_axis][1]])
         ax.set_ylim([dimensions[current_axis][0], 0])
-        fig.canvas.draw_idle()
+        # fig.canvas.draw_idle()
 
     radio_buttons.on_clicked(update_axis)
-    update_axis('Axial')
+    update_axis('Front-to-Back')
     plt.show()
 
 
 # Example usage:
 if __name__ == "__main__":
-    image3d = generate_wood_face(seed=6, rot_deg=8, depth=1000)
+    image3d = generate_wood_face(seed=1, rot_deg=5)
     interactive_slice_viewer(image3d)
