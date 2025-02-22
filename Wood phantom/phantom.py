@@ -114,7 +114,6 @@ def interactive_slice_viewer(image3d):
             img_display.set_data(image3d[:, slice_idx, :].T)
         elif current_axis == 2:
             img_display.set_data(image3d[:, :, slice_idx].T)
-        # fig.canvas.draw_idle()
 
     def update_axis(label):
         nonlocal current_axis
@@ -135,7 +134,7 @@ def interactive_slice_viewer(image3d):
             valmin=0,
             valmax=max_slices[current_axis],
             valinit=slice_index,
-            valstep=int(max_slices[current_axis]/10)+1
+            valstep=int(max_slices[current_axis]/20)+1
         )
         slice_slider.on_changed(update_slice)
 
@@ -144,7 +143,6 @@ def interactive_slice_viewer(image3d):
                                 if current_axis == 1 else image3d[:, :, 0].T, cmap='gray')
         ax.set_xlim([0, dimensions[current_axis][1]])
         ax.set_ylim([dimensions[current_axis][0], 0])
-        # fig.canvas.draw_idle()
 
     radio_buttons.on_clicked(update_axis)
     update_axis('Front-to-Back')
@@ -153,5 +151,5 @@ def interactive_slice_viewer(image3d):
 
 # Example usage:
 if __name__ == "__main__":
-    image3d = generate_wood_face(seed=1, rot_deg=5)
+    image3d = generate_wood_face(seed=1, rot_deg=45)
     interactive_slice_viewer(image3d)
